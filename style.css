@@ -528,15 +528,19 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
 }
 .showreel-video {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: cover;
 }
 .showreel-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(28,47,38,0.55) 0%, rgba(28,47,38,0.4) 45%, rgba(28,47,38,0.75) 100%);
+  background: linear-gradient(180deg, rgba(28,47,38,0.55) 0%, rgba(28,47,38,0.40) 45%, rgba(28,47,38,0.75) 100%);
   z-index: 1;
 }
 .showreel-content {
@@ -549,64 +553,12 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
 .showreel-content .section-title { margin-bottom: 14px; }
 .showreel-content .section-sub { margin-left: auto; margin-right: auto; margin-bottom: 0; }
 
-/* ===================== PARALLAX QUOTE BANNER ===================== */
-.parallax-banner {
-  position: relative;
-  min-height: 50vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  text-align: center;
-}
-.parallax-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  transform: scale(1.02);
-}
-.parallax-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(28,47,38,0.78) 0%, rgba(28,47,38,0.62) 50%, rgba(28,47,38,0.78) 100%);
-}
-.parallax-content {
-  position: relative;
-  z-index: 1;
-  max-width: 760px;
-  padding: 90px 32px;
-  color: var(--ivory);
-}
-.parallax-content i.fa-quote-left {
-  color: var(--gold);
-  font-size: 1.6rem;
-  margin-bottom: 22px;
-  display: block;
-}
-.parallax-quote {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  line-height: 1.5;
-  margin-bottom: 22px;
-  color: var(--ivory);
-}
-.parallax-cite {
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--gold-light);
-  font-weight: 500;
-}
-
-@media (max-width: 860px) {
-  .parallax-bg { background-attachment: scroll; }
+@media (max-width: 560px) {
+  .showreel { height: 64vh; min-height: 420px; }
 }
 
 /* ===================== PORTFOLIO ===================== */
-.portfolio { padding: 120px 0; background: var(--ivory-2); }
+.portfolio { padding: 120px 0; background: var(--ivory-2); position: relative; }
 .portfolio.portfolio-page { padding-top: 110px; }
 
 .filter-bar {
@@ -650,7 +602,6 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
   cursor: pointer;
   transition: var(--transition);
 }
-.gallery-item:nth-child(4n+1) { grid-row: span 2; aspect-ratio: 3/5; }
 
 .gallery-item.hide { display: none; }
 
@@ -851,6 +802,7 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
 
 @media (max-width: 860px) {
   .services-bg { background-attachment: scroll; }
+  .philosophy-bg { background-attachment: scroll; }
 }
 
 /* ===================== TESTIMONIALS ===================== */
@@ -883,6 +835,56 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
 }
 .t-person h4 { font-size: 0.95rem; margin-bottom: 2px; }
 .t-person span { font-size: 0.8rem; color: var(--text-muted); }
+
+/* Testimonials — auto-scrolling columns */
+.testimonials-columns-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  max-height: 740px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+}
+.testimonial-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation-name: testimonialScroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.testimonial-column:hover { animation-play-state: paused; }
+
+@keyframes testimonialScroll {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.testimonial-mini-card {
+  background: var(--ivory-2);
+  padding: 32px 28px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(28,47,38,0.06);
+  flex-shrink: 0;
+}
+.testimonial-mini-card p {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--espresso);
+  margin-bottom: 22px;
+  line-height: 1.55;
+}
+
+@media (max-width: 1100px) {
+  .testimonial-column-last { display: none; }
+}
+@media (max-width: 860px) {
+  .testimonial-column-mid { display: none; }
+  .testimonials-columns-wrap { max-height: 640px; }
+}
 
 /* ===================== FAQ ===================== */
 .faq { padding: 120px 0; background: var(--ivory); }
@@ -927,37 +929,92 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
 .faq-item.open .faq-a { max-height: 220px; }
 
 /* ===================== INSTAGRAM FEED ===================== */
-.insta-feed { padding: 120px 0; background: var(--forest); }
-.insta-feed .section-title { color: var(--ivory); }
-.insta-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 4px;
-}
-.insta-item {
+.insta-feed {
+  padding: 100px 0 80px;
   position: relative;
-  aspect-ratio: 1/1;
   overflow: hidden;
 }
-.insta-item img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transition: var(--transition);
-}
-.insta-item i {
+.insta-feed-bg {
   position: absolute;
   inset: 0;
+  background-image: url('images/services-background.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: 0;
+}
+.insta-feed-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(28,47,38,0.90) 0%, rgba(28,47,38,0.82) 50%, rgba(28,47,38,0.90) 100%);
+  z-index: 1;
+}
+.insta-feed .section-title { color: var(--ivory); }
+.insta-feed .eyebrow { color: var(--gold-light); }
+.insta-feed .section-sub { color: rgba(247,243,234,0.72); }
+
+/* Marquee strip */
+.insta-marquee-wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  overflow: hidden;
+  margin: 44px 0 0;
+  /* Fade edges */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.insta-marquee {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: marqueeScroll 36s linear infinite;
+}
+.insta-marquee:hover { animation-play-state: paused; }
+
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.insta-slide {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: block;
+}
+.insta-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.insta-slide:hover img { transform: scale(1.07); }
+.insta-slide-hover {
+  position: absolute;
+  inset: 0;
+  background: rgba(28,47,38,0.52);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ivory);
-  font-size: 1.6rem;
-  background: rgba(28,47,38,0.5);
   opacity: 0;
   transition: var(--transition);
+  color: var(--ivory);
+  font-size: 2rem;
 }
-.insta-item:hover img { transform: scale(1.08); }
-.insta-item:hover i { opacity: 1; }
+.insta-slide:hover .insta-slide-hover { opacity: 1; }
+
+@media (max-width: 860px) {
+  .insta-feed-bg { background-attachment: scroll; }
+  .insta-slide { width: 220px; height: 220px; }
+}
+@media (max-width: 560px) {
+  .insta-slide { width: 170px; height: 170px; }
+  .insta-marquee { gap: 10px; }
+}
 
 /* ===================== CONTACT ===================== */
 .contact { padding: 120px 0; background: var(--ivory-2); }
@@ -1064,7 +1121,31 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
 }
 
 /* ===================== FOOTER ===================== */
-.site-footer { background: var(--forest); color: rgba(247,243,234,0.75); padding: 90px 0 0; }
+.site-footer {
+  background: var(--forest);
+  color: rgba(247,243,234,0.75);
+  padding: 90px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.footer-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('images/services-background.webp');
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+  z-index: 0;
+}
+.footer-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(28,47,38,0.95) 0%, rgba(28,47,38,0.92) 100%);
+  z-index: 1;
+}
+@media (max-width: 860px) {
+  .footer-bg { background-attachment: scroll; }
+}
 .footer-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -1188,7 +1269,22 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
 }
 
 /* ===================== PHILOSOPHY / VALUES ===================== */
-.philosophy { padding: 120px 0; background: var(--forest); }
+.philosophy { position: relative; padding: 120px 0; overflow: hidden; }
+.philosophy-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('images/services-background.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: 0;
+}
+.philosophy-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(28,47,38,0.93) 0%, rgba(28,47,38,0.88) 50%, rgba(28,47,38,0.93) 100%);
+  z-index: 1;
+}
 .philosophy .eyebrow { color: var(--gold-light); }
 .values-grid {
   display: grid;
@@ -1458,7 +1554,7 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
   .gallery-grid { grid-template-columns: repeat(3, 1fr); }
-  .insta-grid { grid-template-columns: repeat(3, 1fr); }
+
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .values-grid, .team-grid { grid-template-columns: repeat(2, 1fr); }
   .process-grid { grid-template-columns: repeat(3, 1fr); gap: 32px 24px; }
@@ -1489,7 +1585,7 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
   .about-badge { padding: 20px; bottom: -20px; right: -16px; }
   .badge-num { font-size: 2rem; }
 
-  .testimonial-grid, .gallery-grid, .insta-grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonial-grid, .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .services-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
   .contact-form-wrap { padding: 32px; }
@@ -1501,8 +1597,7 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
 @media (max-width: 560px) {
   .container { padding: 0 20px; }
   .about, .portfolio, .services, .testimonials, .faq, .insta-feed, .contact { padding: 80px 0; }
-  .testimonial-grid, .gallery-grid, .insta-grid { grid-template-columns: 1fr; }
-  .gallery-item:nth-child(4n+1) { grid-row: span 1; aspect-ratio: 3/4; }
+  .testimonial-grid, .gallery-grid { grid-template-columns: 1fr; }
   .hero-actions { flex-direction: column; width: 100%; }
   .hero-actions .btn { width: 100%; }
   .trust-wrap { gap: 18px 30px; }
@@ -1510,6 +1605,4 @@ h4 { font-size: 1.15rem; font-weight: 600; font-family: var(--font-body); color:
   .values-grid, .stats-grid, .process-grid, .team-grid { grid-template-columns: 1fr; }
   .philosophy, .process, .team, .about-cta, .stats-strip { padding: 70px 0; }
   .page-hero { height: 56vh; min-height: 380px; }
-  .showreel { height: 64vh; min-height: 420px; }
-  .parallax-content { padding: 64px 24px; }
 }
